@@ -30,10 +30,10 @@ class TestStrategy(bt.Strategy):
 
         # 五日移动平均线
         self.sma5 = bt.indicators.SimpleMovingAverage(
-            self.datas[0], period=5)
+            self.datas[0], period=10)
         # 十日移动平均线
         self.sma10 = bt.indicators.SimpleMovingAverage(
-            self.datas[0], period=10)
+            self.datas[0], period=60)
 
     def notify_order(self, order):
         """
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
     # 设定初始资金和佣金
     cerebro.broker.setcash(1000000.0)
-    cerebro.broker.setcommission(0.005)
+    cerebro.broker.setcommission(0.0012)
 
     # 策略执行前的资金
     print('启动资金: %.2f' % cerebro.broker.getvalue())

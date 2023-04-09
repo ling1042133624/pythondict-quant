@@ -3,6 +3,7 @@
 # 转载请注明出处
 import datetime
 import os.path
+import pprint
 import sys
 import pickle
 import backtrader as bt
@@ -87,13 +88,14 @@ class TestStrategy(bt.Strategy):
                 self.log('SELL CREATE, %.2f' % self.dataclose[0])
                 self.order = self.sell()
 
+
 def run_cerebro(stock_file, result):
     """
     运行策略
     :param stock_file: 股票数据文件位置
     :param result: 回测结果存储变量
     """
-    
+
     cerebro = bt.Cerebro()
 
     cerebro.addstrategy(TestStrategy)
@@ -134,20 +136,37 @@ def run_cerebro(stock_file, result):
     result[stock_name] = float(money_left - 10000) / 10000
 
 
-files_path = 'stocks\\'
-result = {}
-
-# 遍历所有股票数据
-for stock in os.listdir(files_path):
-    modpath = os.path.dirname(os.path.abspath(sys.argv[0]))
-    datapath = os.path.join(modpath, files_path + stock)
-    print(datapath)
+def process_stock(file_path, result):
     try:
-        run_cerebro(datapath, result)
+        run_cerebro(file_path, result)
     except Exception as e:
         print(e)
 
 
-f = open('./batch_macd_result.txt', 'wb')
-pickle.dump(result, f)
-f.close()
+if __name__ == "__main__":
+
+    import multiprocessing
+    from multiprocessing import Manager
+
+    files_path = 'stocks\\'
+    result = Manager().dict()
+    num_of_processes = 20
+    pool = multiprocessing.Pool(processes=num_of_processes)
+
+    # 遍历所有股票数据
+    for stock in os.listdir(files_path):
+        modpath = os.path.dirname(os.path.abspath(sys.argv[0]))
+        datapath = os.path.join(modpath, files_path + stock)
+        print(datapath)
+        try:
+            # run_cerebro(datapath, result)
+            pool.apply_async(process_stock, args=(datapath, result))
+        except Exception as e:
+            print(e)
+
+    pool.close()
+    pool.join()
+    f = open('batch_macd_result-llq.txt', 'wb')
+    result = dict(result)
+    pickle.dump(result, f)
+    f.close()
