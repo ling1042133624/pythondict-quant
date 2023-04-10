@@ -6,7 +6,7 @@ import os.path
 import sys
 import pickle
 import backtrader as bt
-from backtrader.indicators import EMA
+from backtrader.indicators.ema import ExponentialMovingAverage
 
 
 class TestStrategy(bt.Strategy):
@@ -27,17 +27,17 @@ class TestStrategy(bt.Strategy):
             self.data_close - self.low_nine, self.high_nine - self.low_nine, zero=None
         )
         # 计算rsv的3周期加权平均值，即K值
-        self.K = bt.indicators.EMA(self.rsv, period=3, plot=False)
+        self.K = bt.indicators.ExponentialMovingAverage(self.rsv, period=3, plot=False)
         # D值=K值的3周期加权平均值
-        self.D = bt.indicators.EMA(self.K, period=3, plot=False)
+        self.D = bt.indicators.ExponentialMovingAverage(self.K, period=3, plot=False)
         # J=3*K-2*D
         self.J = 3 * self.K - 2 * self.D
 
         # MACD策略参数
-        me1 = EMA(self.data, period=12)
-        me2 = EMA(self.data, period=26)
+        me1 = ExponentialMovingAverage(self.data, period=12)
+        me2 = ExponentialMovingAverage(self.data, period=26)
         self.macd = me1 - me2
-        self.signal = EMA(self.macd, period=9)
+        self.signal = ExponentialMovingAverage(self.macd, period=9)
         bt.indicators.MACDHisto(self.data)
 
     @staticmethod

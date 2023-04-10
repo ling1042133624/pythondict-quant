@@ -16,7 +16,7 @@
 
 5.[Python 量化投资实战教程(5) — A股回测KDJ策略](https://pythondict.com/quant/backtrader-kdj-a-market/) - 2020/05/16
 
-6.[Python 量化投资实战教程(6) — 交易平均收益](https://pythondict.com/quant/backtrader-average-profit/) - 2020/05/26
+6.[Python 量化投资实战教程(6) — 交易平均收益](https://pythondict.com/quant/backtrader-average-profit-2/) - 2020/05/26
 
 7.[Python 量化投资实战教程(7) — 孕线真的有用吗？](https://pythondict.com/quant/python-quant-harami/) - 2020/08/20
 

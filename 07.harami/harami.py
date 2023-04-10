@@ -6,7 +6,7 @@ import os.path
 import sys
 import numpy as np
 import backtrader as bt
-from backtrader.indicators import EMA
+from backtrader.indicators.ema import ExponentialMovingAverage
 
 
 class TestStrategy(bt.Strategy):
@@ -37,10 +37,10 @@ class TestStrategy(bt.Strategy):
 
         self.sma20 = bt.indicators.SimpleMovingAverage(self.datas[0], period=20)
 
-        me1 = EMA(self.data, period=12)
-        me2 = EMA(self.data, period=26)
+        me1 = ExponentialMovingAverage(self.data, period=12)
+        me2 = ExponentialMovingAverage(self.data, period=26)
         self.macd = me1 - me2
-        self.signal = EMA(self.macd, period=9)
+        self.signal = ExponentialMovingAverage(self.macd, period=9)
 
         bt.indicators.MACDHisto(self.data)
 
