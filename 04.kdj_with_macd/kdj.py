@@ -5,7 +5,7 @@ import datetime
 import os.path
 import sys
 import backtrader as bt
-from backtrader.indicators import EMA
+from backtrader.indicators.ema import ExponentialMovingAverage
 
 
 class TestStrategy(bt.Strategy):
@@ -35,9 +35,9 @@ class TestStrategy(bt.Strategy):
             self.data_close - self.low_nine, self.high_nine - self.low_nine, zero=None
         )
         # 计算rsv的3周期加权平均值，即K值
-        self.K = bt.indicators.EMA(self.rsv, period=3)
+        self.K = ExponentialMovingAverage(self.rsv, period=3)
         # D值=K值的3周期加权平均值
-        self.D = bt.indicators.EMA(self.K, period=3)
+        self.D = ExponentialMovingAverage(self.K, period=3)
         # J=3*K-2*D
         self.J = 3 * self.K - 2 * self.D
 
